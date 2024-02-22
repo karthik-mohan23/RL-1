@@ -7,6 +7,8 @@ const DefaultLayout = () => {
         return <Navigate to="/login" />;
     }
 
+    const onLogout = () => localStorage.removeItem("ACCESS_TOKEN");
+
     return (
         <div id="defaultLayout">
             <aside>
@@ -16,7 +18,12 @@ const DefaultLayout = () => {
             <div className="content">
                 <header>
                     <div>Header</div>
-                    <div>User info</div>
+                    <div>
+                        {user?.name}
+                        <Link onClick={onLogout} className="btn-logout">
+                            Logout
+                        </Link>
+                    </div>
                 </header>
                 <main>
                     <Outlet />
