@@ -11,7 +11,7 @@ const Signup = () => {
 
     const { setUser, setToken } = useStateContext();
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         const payload = {
             name: nameRef.current.value,
@@ -20,19 +20,17 @@ const Signup = () => {
             password_confirmation: passwordConfirmationRef.current.value,
         };
 
-        axiosClient
-            .post("/signup", payload)
-            .then((response) => {
-                const { data } = response;
-                setToken(data.token);
-                setUser(data.user);
-            })
-            .catch((err) => {
-                const response = err.response;
-                if (response && response.status === 422) {
-                    console.log(response.data.errors);
-                }
-            });
+        try {
+            const response = await axiosClient.post("/signup", payload);
+            const { data } = response;
+            setToken(data.token);
+            setUser(data.user);
+        } catch (err) {
+            if (err.response && err.response.status === 422) {
+                console.log(err.response.data.errors);
+            }
+            console.log(err.response.data.errors);
+        }
     };
     return (
         <div className="login-signup-form animated fadeInDown">
