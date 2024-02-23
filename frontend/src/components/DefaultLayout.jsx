@@ -3,11 +3,15 @@ import { useStateContext } from "../context/ContextProvider";
 
 const DefaultLayout = () => {
     const { user, token } = useStateContext();
+
     if (!token) {
         return <Navigate to="/login" />;
     }
 
-    const onLogout = () => localStorage.removeItem("ACCESS_TOKEN");
+    const onLogout = () => {
+        localStorage.removeItem("ACCESS_TOKEN");
+        window.location.reload();
+    };
 
     return (
         <div id="defaultLayout">

@@ -23,13 +23,15 @@ axiosClient.interceptors.response.use(
     },
     (error) => {
         const { response } = error;
-        // if user is unauthorized
-        // token expired or incorrect token
         if (response.status === 401) {
+            // if user is unauthorized
+            // token expired or incorrect token
             localStorage.removeItem("ACCESS_TOKEN");
-        } else {
-            throw error;
+        } else if (response.status === 404) {
+            //Show not found
         }
+
+        throw error;
     }
 );
 
