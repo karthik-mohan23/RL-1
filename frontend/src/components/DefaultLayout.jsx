@@ -1,16 +1,20 @@
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../context/ContextProvider";
+import axiosClient from "../axios-client";
 
 const DefaultLayout = () => {
-    const { user, token } = useStateContext();
-
+    const { user, token, setUser, setToken } = useStateContext();
+    console.log(user);
+    console.log(token);
     if (!token) {
         return <Navigate to="/login" />;
     }
 
     const onLogout = () => {
-        localStorage.removeItem("ACCESS_TOKEN");
-        window.location.reload();
+        axiosClient.post("/logout").then(() => {
+            setUser({});
+            setToken(null);
+        });
     };
 
     return (

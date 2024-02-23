@@ -21,7 +21,7 @@ const Signup = () => {
             password: passwordRef.current.value,
             password_confirmation: passwordConfirmationRef.current.value,
         };
-
+        setErrors(null);
         try {
             const response = await axiosClient.post("/signup", payload);
             console.log(response);
@@ -29,7 +29,13 @@ const Signup = () => {
             setToken(data.token);
             setUser(data.user);
         } catch (err) {
-            setErrors(err.response.data.errors);
+            if (error.response.data.errors) {
+                setErrors(error.response.data.errors);
+            } else {
+                setErrors({
+                    email: [error.response.data.message],
+                });
+            }
         }
     };
     return (

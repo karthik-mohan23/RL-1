@@ -17,14 +17,20 @@ const Login = () => {
             email: emailRef.current.value,
             password: passwordRef.current.value,
         };
-
+        setErrors(null);
         try {
             const response = await axiosClient.post("/login", payload);
             const { data } = response;
             setToken(data.token);
             setUser(data.user);
         } catch (error) {
-            setErrors(error.response.data.errors);
+            if (error.response.data.errors) {
+                setErrors(error.response.data.errors);
+            } else {
+                setErrors({
+                    email: [error.response.data.message],
+                });
+            }
         }
     };
 

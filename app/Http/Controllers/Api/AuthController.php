@@ -36,7 +36,7 @@ class AuthController extends Controller
         if(!Auth::attempt($credentials)) {
         return response([
         'message' => 'Provided credentials are incorrect'
-        ]);
+        ],422);
     }
 
         $user = Auth::user();
@@ -54,7 +54,7 @@ class AuthController extends Controller
 
         $user = $request->user();
         //   When a user makes a request to log out, typically, this request would contain some sort of authentication token in the header (like a bearer token) or in the request payload. Laravel automatically handles the authentication process and makes the authenticated user available via the $request->user() method call.
-        $user->currentAccessToken->delete();
+        $user->currentAccessToken()->delete();
         return response('',204);
 
     }
